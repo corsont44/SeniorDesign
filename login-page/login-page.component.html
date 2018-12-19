@@ -1,0 +1,175 @@
+
+<!-- <h2>Login Page</h2> -->
+<br>
+
+
+<!--login box-->
+<div *ngIf="!isLoggedIn && !create">
+	<!--bootstrap login card component-->
+	<!--revist for password verification, patter validator is used as dummy verificaiton-->
+	<div class="card card-login mx-auto mt-5">
+		<div class="card-header">
+			Login
+		</div>
+		<div class="card-body">
+			<div *ngIf="logInFail">
+				Username or Password is incorrect.
+			</div>
+			<form #fLogin="ngForm" (ngSubmit)="attemptLogin(fLogin)">
+				<div ngModelGroup="logAttempt" #logAttempt="ngModelGroup">
+					<div class="form-group">
+						<input required ngModel name="user_name" #user_name1="ngModel" type="text" id="user_name" class="form-control"
+						 placeholder="Username">
+						<div class="alert alert-danger" *ngIf="user_name1.touched && !user_name1.valid">
+							<div *ngIf="user_name1.errors.required">
+								Username is Required
+							</div>
+						</div>
+
+						<br>
+						<input type="password" id="password" ngModel name="password" #password1="ngModel" class="form-control"
+						 placeholder="Password" required>
+						<div class="alert alert-danger" *ngIf="password1.touched && !password1.valid">
+							<div *ngIf="password1.errors.required">
+								Password is Required
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- test
+				<p>
+					{{ fLogin.value | json }}
+				</p> -->
+				<button class="btn btn-primary btn-block" [disabled]="!fLogin.valid">Login</button>
+				<br>
+				<button class="btn btn-primary btn-sm" (click)="create = true">No account? Create one now!</button>
+			</form>
+		</div>
+	</div>
+	<!--end case false-->
+</div>
+
+<div *ngIf="create">
+	<form #fU="ngForm" (ngSubmit)="createUser(fU)">
+		<div ngModelGroup="newUser" #newUser="ngModelGroup">
+				<button class="btn btn-primary btn-sm" (click)="create = false">Back to Login Screen</button>
+			<div class="form-group">
+				<label for="firstName">First Name</label>
+				<input required minlength="2" maxlength="15" ngModel name="firstName" #firstName="ngModel"
+				 id="firstName" type="text" class="form-control">
+				<div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">
+					<div *ngIf="firstName.errors.required">
+						First name is required.
+					</div>
+					<div *ngIf="firstName.errors.minlength">
+						First name should be {{firstName.errors.minlength.requiredLength}}-15 characters
+					</div>
+
+				</div>
+				<label for="lastName">Last Name</label>
+				<input required minlength="2" maxlength="15" ngModel name="lastName" #lastName="ngModel" 
+				 id="lastName" type="text" class="form-control">
+				<div class="alert alert-danger" *ngIf="lastName.touched && !lastName.valid">
+					<div *ngIf="lastName.errors.required">
+						Last name is required.
+					</div>
+					<div *ngIf="lastName.errors.minlength">
+						Last name should be {{lastName.errors.minlength.requiredLength}}-15 characters
+					</div>
+
+				</div>
+				<label for="email">Email Address</label>
+				<input required minlength="3" maxlength="60" ngModel name="email" #email="ngModel" id="email"
+				 type="text" class="form-control">
+				<div class="alert alert-danger" *ngIf="email.touched && !email.valid">
+					<div *ngIf="email.errors.required">
+						Email address is required.
+					</div>
+					<div *ngIf="email.errors.minlength">
+						Email address should be at least {{email.errors.minlength.requiredLength}} characters
+					</div>
+					
+				</div>
+				<label for="user_name">Username</label>
+				<input required minlength="2" maxlength="15" ngModel name="user_name" #user_name="ngModel" 
+				 id="user_name" type="text" class="form-control">
+				<div class="alert alert-danger" *ngIf="user_name.touched && !user_name.valid">
+					<div *ngIf="user_name.errors.required">
+						Username is required.
+					</div>
+					<div *ngIf="user_name.errors.minlength">
+						Username should be {{user_name.errors.minlength.requiredLength}}-15 characters
+					</div>
+					
+				</div>
+				<label for="password">Password</label>
+				<input required minlength="2" maxlength="20" ngModel name="password" #password="ngModel" 
+				 id="password" type="password" class="form-control">
+				<div class="alert alert-danger" *ngIf="password.touched && !password.valid">
+					<div *ngIf="password.errors.required">
+						Password is required.
+					</div>
+					<div *ngIf="password.errors.minlength">
+						Password should be {{password.errors.minlength.requiredLength}}-20 characters
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<!-- <p>
+			{{ fU.value | json }}
+		</p> -->
+		<button class="btn btn-primary" [disabled]="!fU.valid">Create account</button>
+	</form>
+</div>
+
+<!--logged in box-->
+<!--**if user is logded in, navigates to annother component,
+	then back to the login page, the page will know user is logged in,
+	but the login component will no longer hold that user object
+	resolve later when implementing logout feature**-->
+<div *ngIf="isLoggedIn">
+	<div class="card card-login mx-auto mt-5">
+		<div class="card-header bg-dark" style="color:white">
+			Login Succesful
+		</div>
+		<br>
+		<div class="text-center">
+			<button class="btn btn-primary" (click)="logout()">Logout</button>
+		</div>
+		<br>
+		<div class="text-center">
+			<!-- <p>
+				user is logged in (bool): {{ isLoggedIn }}
+			</p>-->
+			<p>
+				Your Permanent User Number: {{ user.user_number }}
+			</p> 
+		</div>
+	</div>
+
+	<!--end case true-->
+</div>
+
+
+<!-- original basic object returning login boxes
+
+userName input box //
+
+<br>
+<input [(ngModel)]="userName" (keyup.enter)="onUserKeyUp()" />
+<br>
+password input box //
+<input [(ngModel)]="password" (keyup.enter)="onPassKeyUp()" />
+<br>
+<button (click)="onLogin($event)" [ngStyle]="{
+	'backgroundColor': canLogin ? 'blue': 'gray',
+	'color': canLogin ? 'white': 'black',
+	'fontWeight': canLogin ? 'bold': 'normal'
+}">
+	Login
+</button>
+
+
+-->

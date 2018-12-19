@@ -1,0 +1,326 @@
+<h2 style="font:x-large; color:green">Schedule</h2>
+<br>
+<!-- <p>
+  user number {{ user_number }} is logged in
+</p> -->
+
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="(viewMode ==='current') ? 'active' : ''" (click)="viewMode = 'current'">
+      Current Schedule</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="(viewMode ==='create') ? 'active' : ''" (click)="viewMode = 'create'">
+      Create a schedule</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="(viewMode ==='delete') ? 'active' : ''" (click)="viewMode = 'delete'">
+      Cancel a schedule</a>
+  </li>
+</ul>
+<br>
+
+
+<div [ngSwitch]="viewMode">
+
+
+  <div *ngSwitchCase="'current'">
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Sunday</th>
+          <th scope="col">Monday</th>
+          <th scope="col">Tuesday</th>
+          <th scope="col">Wednesday</th>
+          <th scope="col">Thursday</th>
+          <th scope="col">Friday</th>
+          <th scope="col">Saturday</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td *ngFor="let day of week">
+            <div *ngFor="let zone of day">
+              Zone: {{zone.zone_address}}
+              <br>
+              {{zone.minutes}} minutes
+              <br>
+              Starting at {{zone.time}}
+              <br>
+              <br>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <p>list of schedule objs: {{ scheduleList | json }}</p>
+    <p>week array break down: {{ week | json }}</p>
+    <p>dayZones array end state: {{ dayZones | json }}</p> -->
+  </div>
+  <div *ngSwitchCase="'create'">
+    <br>
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="(viewMode2 ==='zone1') ? 'active' : ''" (click)="viewMode2 = 'zone1'">
+          Zone 1 schedule</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="(viewMode2 ==='zone2') ? 'active' : ''" (click)="viewMode2 = 'zone2'">
+          Zone 2 schedule</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [ngClass]="(viewMode2 ==='zone3') ? 'active' : ''" (click)="viewMode2 = 'zone3'">
+          Zone 3 schedule</a>
+      </li>
+    </ul>
+
+    <div [ngSwitch]="viewMode2">
+      <div *ngSwitchCase="'zone1'">
+        <form #fS1="ngForm" (ngSubmit)="setSchedule(fS1)" style="padding:20px">
+          <div ngModelGroup="schedule" #schedule="ngModelGroup">
+            <div class="form-group" id="zone1">
+              <div>
+                <label for="day">Water on:</label>
+                <br>
+                <select required id="day" class="custom-select" ngModel name="dayOfWeek" #day="ngModel">
+                  <option selected>Choose a day</option>
+                  <option value="1">Sunday</option>
+                  <option value="2">Monday</option>
+                  <option value="3">Tuesday</option>
+                  <option value="4">Wednesday</option>
+                  <option value="5">Thursday</option>
+                  <option value="6">Friday</option>
+                  <option value="7">Saturday</option>
+                </select> <br> <br>
+                <div class="alert alert-danger" *ngIf="day.touched && !day.valid">
+                  <div *ngIf="day.errors.required">
+                    You must select a day of the week
+                  </div>
+                </div>
+                <br>
+              </div>
+              <label for="time">Start time:</label>
+              <br>
+              <select required id="time" ngModel name="startTime" #time="ngModel" class="custom-select">
+                <option selected>Choose a starting time</option>
+                <option value="00:00:00">12:00am</option>
+                <option value="01:00:00">1:00am</option>
+                <option value="02:00:00">2:00am</option>
+                <option value="03:00:00">3:00am</option>
+                <option value="04:00:00">4:00am</option>
+                <option value="05:00:00">5:00am</option>
+                <option value="06:00:00">6:00am</option>
+                <option value="07:00:00">7:00am</option>
+                <option value="08:00:00">8:00am</option>
+                <option value="09:00:00">9:00am</option>
+                <option value="10:00:00">10:00am</option>
+                <option value="11:00:00">11:00am</option>
+                <option value="12:00:00">12:00pm</option>
+                <option value="13:00:00">1:00pm</option>
+                <option value="14:00:00">2:00pm</option>
+                <option value="15:00:00">3:00pm</option>
+                <option value="16:00:00">4:00pm</option>
+                <option value="17:00:00">5:00pm</option>
+                <option value="18:00:00">6:00pm</option>
+                <option value="19:00:00">7:00pm</option>
+                <option value="20:00:00">8:00pm</option>
+                <option value="21:00:00">9:00pm</option>
+                <option value="22:00:00">10:00pm</option>
+                <option value="23:00:00">11:00pm</option>
+              </select> <br> <br>
+              <div class="alert alert-danger" *ngIf="time.touched && !time.valid">
+                <div *ngIf="time.errors.required || time.errors.max">
+                  You must enter a time between 0:00 and 24:00
+                </div>
+              </div>
+              <br>
+              <label for="minutes">Duration (up to 90 minutes):</label>
+              <br>
+              <input required max="90" id="minutes" type="number" ngModel name="duration" #minutes="ngModel" class="form-control"><label
+                for="minutes">min.</label>
+                <br>
+              <div class="alert alert-danger" *ngIf="minutes.touched && !minutes.valid">
+                <div *ngIf="minutes.errors.required || minutes.errors.max">
+                  You must enter a duration up to 90 minutes.
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <p>
+            {{ fS1.value | json }}
+          </p> -->
+          <button class="btn btn-primary" [disabled]="!fS1.valid">Create schedule</button>
+        </form>
+      </div>
+      <div *ngSwitchCase="'zone2'">
+        <form #fS2="ngForm" (ngSubmit)="setSchedule(fS2)" style="padding:20px">
+          <div ngModelGroup="schedule" #schedule="ngModelGroup">
+            <div class="form-group" id="zone1">
+              <div>
+                <label for="day">Water on:</label>
+                <br>
+                <select required id="day" class="custom-select" ngModel name="dayOfWeek" #day="ngModel">
+                  <option selected>Choose a day</option>
+                  <option value="1">Sunday</option>
+                  <option value="2">Monday</option>
+                  <option value="3">Tuesday</option>
+                  <option value="4">Wednesday</option>
+                  <option value="5">Thursday</option>
+                  <option value="6">Friday</option>
+                  <option value="7">Saturday</option>
+                </select> <br> <br>
+                <div class="alert alert-danger" *ngIf="day.touched && !day.valid">
+                  <div *ngIf="day.errors.required">
+                    You must select a day of the week
+                  </div>
+                </div>
+                <br>
+              </div>
+              <label for="time">Start time:</label>
+              <br>
+              <select required id="time" ngModel name="startTime" #time="ngModel" class="custom-select">
+                <option selected>Choose a starting time</option>
+                <option value="00:00:00">12:00am</option>
+                <option value="01:00:00">1:00am</option>
+                <option value="02:00:00">2:00am</option>
+                <option value="03:00:00">3:00am</option>
+                <option value="04:00:00">4:00am</option>
+                <option value="05:00:00">5:00am</option>
+                <option value="06:00:00">6:00am</option>
+                <option value="07:00:00">7:00am</option>
+                <option value="08:00:00">8:00am</option>
+                <option value="09:00:00">9:00am</option>
+                <option value="10:00:00">10:00am</option>
+                <option value="11:00:00">11:00am</option>
+                <option value="12:00:00">12:00pm</option>
+                <option value="13:00:00">1:00pm</option>
+                <option value="14:00:00">2:00pm</option>
+                <option value="15:00:00">3:00pm</option>
+                <option value="16:00:00">4:00pm</option>
+                <option value="17:00:00">5:00pm</option>
+                <option value="18:00:00">6:00pm</option>
+                <option value="19:00:00">7:00pm</option>
+                <option value="20:00:00">8:00pm</option>
+                <option value="21:00:00">9:00pm</option>
+                <option value="22:00:00">10:00pm</option>
+                <option value="23:00:00">11:00pm</option>
+              </select> <br> <br>
+              <div class="alert alert-danger" *ngIf="time.touched && !time.valid">
+                <div *ngIf="time.errors.required || time.errors.max">
+                  You must enter a time between 0:00 and 24:00
+                </div>
+              </div>
+              <br>
+              <label for="minutes">Duration (up to 90 minutes):</label>
+              <br>
+              <input required max="90" id="minutes" type="number" ngModel name="duration" #minutes="ngModel" class="form-control"><label
+                for="minutes">min.</label>
+                <br>
+              <div class="alert alert-danger" *ngIf="minutes.touched && !minutes.valid">
+                <div *ngIf="minutes.errors.required || minutes.errors.max">
+                  You must enter a duration up to 90 minutes.
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <p>
+            {{ fS2.value | json }}
+          </p> -->
+          <button class="btn btn-primary" [disabled]="!fS2.valid">Create schedule</button>
+        </form>
+      </div>
+      <div *ngSwitchCase="'zone3'">
+        <form #fS3="ngForm" (ngSubmit)="setSchedule(fS3)" style="padding:20px">
+          <div ngModelGroup="schedule" #schedule="ngModelGroup">
+            <div class="form-group" id="zone1">
+              <div>
+                <label for="day">Water on:</label>
+                <br>
+                <select required id="day" class="custom-select" ngModel name="dayOfWeek" #day="ngModel">
+                  <option selected>Choose a day</option>
+                  <option value="1">Sunday</option>
+                  <option value="2">Monday</option>
+                  <option value="3">Tuesday</option>
+                  <option value="4">Wednesday</option>
+                  <option value="5">Thursday</option>
+                  <option value="6">Friday</option>
+                  <option value="7">Saturday</option>
+                </select> <br> <br>
+                <div class="alert alert-danger" *ngIf="day.touched && !day.valid">
+                  <div *ngIf="day.errors.required">
+                    You must select a day of the week
+                  </div>
+                </div>
+                <br>
+              </div>
+              <label for="time">Start time:</label>
+              <br>
+              <select required id="time" ngModel name="startTime" #time="ngModel" class="custom-select">
+                <option selected>Choose a starting time</option>
+                <option value="00:00:00">12:00am</option>
+                <option value="01:00:00">1:00am</option>
+                <option value="02:00:00">2:00am</option>
+                <option value="03:00:00">3:00am</option>
+                <option value="04:00:00">4:00am</option>
+                <option value="05:00:00">5:00am</option>
+                <option value="06:00:00">6:00am</option>
+                <option value="07:00:00">7:00am</option>
+                <option value="08:00:00">8:00am</option>
+                <option value="09:00:00">9:00am</option>
+                <option value="10:00:00">10:00am</option>
+                <option value="11:00:00">11:00am</option>
+                <option value="12:00:00">12:00pm</option>
+                <option value="13:00:00">1:00pm</option>
+                <option value="14:00:00">2:00pm</option>
+                <option value="15:00:00">3:00pm</option>
+                <option value="16:00:00">4:00pm</option>
+                <option value="17:00:00">5:00pm</option>
+                <option value="18:00:00">6:00pm</option>
+                <option value="19:00:00">7:00pm</option>
+                <option value="20:00:00">8:00pm</option>
+                <option value="21:00:00">9:00pm</option>
+                <option value="22:00:00">10:00pm</option>
+                <option value="23:00:00">11:00pm</option>
+              </select> <br> <br>
+              <div class="alert alert-danger" *ngIf="time.touched && !time.valid">
+                <div *ngIf="time.errors.required">
+                  You must enter a time between 0:00 and 24:00
+                </div>
+              </div>
+              <br>
+              <label for="minutes">Duration (up to 90 minutes):</label>
+              <br>
+              <input required max="90" id="minutes" type="number" ngModel name="duration" #minutes="ngModel" class="form-control"><label
+                for="minutes">min.</label>
+                <br>
+              <div class="alert alert-danger" *ngIf="minutes.touched && !minutes.valid">
+                <div *ngIf="minutes.errors.required || minutes.errors.max">
+                  You must enter a duration up to 90 minutes.
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <p>
+            {{ fS3.value | json }}
+          </p> -->
+          <button class="btn btn-primary" [disabled]="!fS3.valid">Create schedule</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <div *ngSwitchCase="'delete'">
+    <ul>
+      <div *ngFor="let day of week">
+        <div *ngFor="let schedule of day" style="background-color: rgb(143, 248, 234); border:green 1px solid; width:50%">
+          Zone {{ schedule.zone_address }}, {{ schedule.minutes }} minutes, day: {{ schedule.day_of_week | weekday }}
+          <button class="btn btn-primary" style="background-color:red !important" (click)="deleteSchedule(schedule)">Cancel</button>
+          <br>
+          <br>
+        </div>
+      </div>
+    </ul>
+  </div>
+
+</div>

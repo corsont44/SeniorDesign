@@ -1,0 +1,74 @@
+<br />
+<h2>Settings Display</h2>
+<br />
+
+<br />
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="(viewMode ==='zones') ? 'active' : ''" (click)="viewMode = 'zones'">Zones</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="(viewMode ==='metrics') ? 'active' : ''" (click)="viewMode = 'metrics'">Active
+      Metrics</a>
+  </li>
+</ul>
+<br>
+
+
+<div [ngSwitch]="viewMode">
+  <div *ngSwitchCase="'zones'">
+    <!--list of zones-->
+
+    <button (click)="onOff()">Turn off all zones</button>
+    <ul>
+      <li *ngFor="let zone of zones">
+        {{ zone.number }} - {{ zone.occupied }}
+        <button (click)="toggleZone(zone)">ON/OFF</button>
+      </li>
+    </ul>
+
+
+
+
+
+  </div>
+  <div *ngSwitchCase="'metrics'">
+    <!-- **revist to change color and size on sub-pills**-->
+      <ul class="nav nav-pills green">
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="(unitType ==='si') ? 'active' : ''" (click)="changeUnits('si')">si units</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [ngClass]="(unitType ==='imperial') ? 'active' : ''" (click)="changeUnits('imperial')">
+              imperial units</a>
+          </li>
+        </ul>
+
+  </div>
+  <div *ngSwitchDefault>other settings here</div>
+</div>
+
+
+<!--*issues with pills Resolved, BS 4 syntax has changed
+<ul class="nav nav-pills">
+  <li [class.nav-link.active]="viewMode == 'zones'">
+    <a (click)="viewMode = 'zones'">Zones</a>
+  </li>
+  <li [class.nav-link.active]="viewMode == 'metrics'">
+    <a (click)="viewMode = 'metrics'">Active Metrics</a>
+  </li>
+</ul> -->
+
+<!-- faulty code for checkboxes
+        <div class="checkbox">
+        <label for="">
+          <input type="checkbox" ngModel name="isMetric">Use SI Units
+        </label>
+      </div>
+      <br>
+      <div class="checkbox">
+          <label for="">
+            <input type="checkbox" ngModel name="isImperial">Use Imperial Units
+          </label>
+        </div>
+-->

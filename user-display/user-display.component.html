@@ -1,0 +1,234 @@
+<h3 style="font:x-large; color:green">Edit User Info</h3>
+<br />
+
+<!-- <p>
+	user number {{ user.user_number }}
+</p> -->
+
+<!--input box for phone number
+w/ progressive formatting-->
+
+<!--<input type="text" [appInputPhone]="'uppercase'">
+see input phone directive for implementation
+-->
+
+
+<!--test data update-->
+<!-- <div>
+	<button (click)="updateUserName()" class="btn btn-default btn-sm">change username test</button>
+</div> -->
+
+<ul class="nav nav-pills">
+	<li class="nav-item">
+		<a class="nav-link" [ngClass]="(viewMode ==='user-info') ? 'active' : ''" (click)="viewMode = 'user-info'">
+			Edit Personal Info</a>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link" [ngClass]="(viewMode ==='address') ? 'active' : ''" (click)="viewMode = 'address'">
+			Edit Address</a>
+	</li>
+</ul>
+
+<div [ngSwitch]="viewMode">
+	<div *ngSwitchCase="'user-info'">
+		<form #f1="ngForm" (ngSubmit)="updateUser(f1)">
+			<div ngModelGroup="consumer" #consumer="ngModelGroup">
+				<div class="form-group">
+					<label for="firstName">First Name</label>
+					<input required minlength="2" maxlength="15" ngModel name="firstName" #firstName="ngModel" (change)="log(firstName)"
+					 id="firstName" type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">
+						<div *ngIf="firstName.errors.required">
+							First name is required.
+						</div>
+						<div *ngIf="firstName.errors.minlength">
+							First name should be {{firstName.errors.minlength.requiredLength}}-15 characters
+						</div>
+
+					</div>
+					<label for="lastName">Last Name</label>
+					<input required minlength="2" maxlength="15" ngModel name="lastName" #lastName="ngModel" (change)="log(lastName)"
+					 id="lastName" type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="lastName.touched && !lastName.valid">
+						<div *ngIf="lastName.errors.required">
+							Last name is required.
+						</div>
+						<div *ngIf="lastName.errors.minlength">
+							Last name should be {{lastName.errors.minlength.requiredLength}}-15 characters
+						</div>
+
+					</div>
+					<label for="email">Email Address</label>
+					<input required minlength="3" maxlength="60" ngModel name="email" #email="ngModel" (change)="log(email)" id="email"
+					 type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="email.touched && !email.valid">
+						<div *ngIf="email.errors.required">
+							Email address is required.
+						</div>
+						<div *ngIf="email.errors.minlength">
+							Email address should be at least {{email.errors.minlength.requiredLength}} characters
+						</div>
+
+					</div>
+					<label for="user_name">Username</label>
+					<input required minlength="2" maxlength="15" ngModel name="user_name" #user_name="ngModel" (change)="log(user_name)"
+					 id="user_name" type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="user_name.touched && !user_name.valid">
+						<div *ngIf="user_name.errors.required">
+							Username is required.
+						</div>
+						<div *ngIf="user_name.errors.minlength">
+							Username should be {{user_name.errors.minlength.requiredLength}}-15 characters
+						</div>
+
+					</div>
+					<label for="password">Password</label>
+					<input required minlength="2" maxlength="20" ngModel name="password" #password="ngModel" (change)="log(password)"
+					 id="password" type="password" class="form-control">
+					<div class="alert alert-danger" *ngIf="password.touched && !password.valid">
+						<div *ngIf="password.errors.required">
+							Password is required.
+						</div>
+						<div *ngIf="password.errors.minlength">
+							Password should be {{password.errors.minlength.requiredLength}}-20 characters
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- <p>
+				{{ f1.value | json }}
+			</p> -->
+			<button class="btn btn-primary" [disabled]="!f1.valid">Save Changes</button>
+		</form>
+	</div>
+
+
+	<div *ngSwitchCase="'user-done'">
+		<p>
+			<br>
+			User information has been updated <br>
+			Name: {{ user.first_name }} {{ user.last_name }} <br>
+			Username: {{ user.user_name}} <br>
+			eMail: {{ user.email }} <br>
+			User Number: {{ user.user_number }} <br>
+		</p>
+	</div>
+	<div *ngSwitchCase="'address-done'">
+		<p>
+			<br>
+			Address Updated: <br>
+			{{ address.number }} {{ address.street }} <br>
+			{{ address.city }}, FL {{ address.zip_code }} <br>
+			User Number: {{ address.user }} <br>
+
+
+		</p>
+	</div>
+
+	<div *ngSwitchCase="'address'">
+		<form #f2="ngForm" (ngSubmit)="updateAddress(f2)">
+			<div ngModelGroup="address" #address="ngModelGroup">
+				<div class="form-group">
+					<br>
+					<label for="street_address">Street Address</label>
+					<input required minlength="2" ngModel name="street_address" #street_address="ngModel" (change)="log(street_address)"
+					 id="street_address" type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="street_address.touched && !street_address.valid">
+						<div *ngIf="street_address.errors.required">
+							street_address is required.
+						</div>
+						<div *ngIf="street_address.errors.minlength">
+							street_address should be at least {{street_address.errors.minlength.requiredLength}} characters
+						</div>
+					</div>
+					<br>
+					<label for="city">City</label>
+					<input required minlength="2" ngModel name="city" #city="ngModel" (change)="log(city)" id="city" type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="city.touched && !city.valid">
+						<div *ngIf="city.errors.required">
+							city is required.
+						</div>
+						<div *ngIf="city.errors.minlength">
+							city should be at least {{city.errors.minlength.requiredLength}} characters
+						</div>
+					</div>
+					<br>
+					<label for="state">Select State:</label>
+					<!--revist to dynamically show state list-->
+					<select required ngModel name="state" #state="ngModel" (change)="log(state)" class="form-control" id="state">
+						<option value="">N/A</option>
+						<option value="1">Puerto Rico</option>
+						<option value="2">Alabama</option>
+						<option value="3">Alaska</option>
+						<option value="4">Arizona</option>
+						<option value="5">Arkansas</option>
+						<option value="6">California</option>
+						<option value="7">Colorado</option>
+						<option value="8">Connecticut</option>
+						<option value="9">Delaware</option>
+						<option value="10">Florida</option>
+						<option value="11">Georgia</option>
+						<option value="12">Hawaii</option>
+						<option value="13">Idaho</option>
+						<option value="14">Illinois</option>
+						<option value="15">Indiana</option>
+						<option value="16">Iowa</option>
+						<option value="17">Kansas</option>
+						<option value="18">Kentucky</option>
+						<option value="19">Louisiana</option>
+						<option value="20">Maine</option>
+						<option value="21">Maryland</option>
+						<option value="22">Massachusetts</option>
+						<option value="23">Michigan</option>
+						<option value="24">Minnesota</option>
+						<option value="25">Mississippi</option>
+						<option value="26">Missouri</option>
+						<option value="27">Montana</option>
+						<option value="28">Nebraska</option>
+						<option value="29">Nevada</option>
+						<option value="30">New Hampshire</option>
+						<option value="31">New Jersey</option>
+						<option value="32">New Mexico</option>
+						<option value="33">New York</option>
+						<option value="34">North Carolina</option>
+						<option value="35">North Dakota</option>
+						<option value="36">Ohio</option>
+						<option value="37">Oklahoma</option>
+						<option value="38">Oregon</option>
+						<option value="39">Pennsylvania</option>
+						<option value="40">Rhode Island</option>
+						<option value="41">South Carolina</option>
+						<option value="42">South Dakota</option>
+						<option value="43">Tennessee</option>
+						<option value="44">Texas</option>
+						<option value="45">Utah</option>
+						<option value="46">Vermont</option>
+						<option value="47">Virginia</option>
+						<option value="48">Washington</option>
+						<option value="49">West Virginia</option>
+						<option value="50">Wisconsin</option>
+						<option value="51">Wyoming</option>
+					</select>
+					<br>
+					<label for="zip_code">Zipcode</label>
+					<input required pattern="[0-9]{5}" ngModel name="zip_code" #zip_code="ngModel" (change)="log(zip_code)" id="zip_code"
+					 type="text" class="form-control">
+					<div class="alert alert-danger" *ngIf="zip_code.touched && !zip_code.valid">
+						<div *ngIf="zip_code.errors.required">
+							zip_code is required.
+						</div>
+						<div *ngIf="zip_code.errors.pattern">
+							zip_code should be exactly 5 numerical digits.
+						</div>
+					</div>
+				</div>
+				<button class="btn btn-primary" [disabled]="!f2.valid">Save Changes</button>
+			</div>
+		</form>
+	</div>
+	<div *ngSwitchDefault>ERROR</div>
+
+
+	<!--test form for user info edit page-->

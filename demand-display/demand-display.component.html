@@ -1,0 +1,61 @@
+<h3 style="font:x-large; color:green">Water On Demand</h3>
+<br>
+<!-- <p>
+  user number {{ user_number }} is logged in!
+</p> -->
+
+<!--form to set a demand today-->
+<div *ngIf="!isDemanded">
+  <form #fOD="ngForm" (ngSubmit)="setOnDemand(fOD)" style="padding:20px">
+    <div ngModelGroup="demand" #demand="ngModelGroup">
+      <label for="check_group">Select zone(s) to water</label>
+      <div class="form-group" id="check_group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" ngModel name="zone1" #zone1checked="ngModel" value="" id="zone1">
+          <label class="form-check-label" for="zone1">
+            Zone 1
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" ngModel name="zone2" #zone2checked="ngModel" value="" id="zone2">
+          <label class="form-check-label" for="zone2">
+            Zone 2
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" ngModel name="zone3" #zone3checked="ngModel" value="" id="zone3">
+          <label class="form-check-label" for="zone3">
+            Zone 3
+          </label>
+        </div>
+      </div>
+      <!--end check form-->
+      <div class="form-group" id="minute_group">
+        <label for="minute_group">Select watering duration for each zone (up to 90 minutes)</label>
+        <br>
+        <label for="duration1">Zone 1</label>
+        <input id="duration1" type="number" max="90" class="form-control" ngModel name="duration1" [disabled]="!fOD.value.demand.zone1">
+        <br>
+        <label for="duration2">Zone 2</label>
+        <input id="duration2" type="number" max="90" class="form-control" ngModel name="duration2" [disabled]="!fOD.value.demand.zone2">
+        <br>
+        <label for="duration3">Zone 3</label>
+        <input id="duration3" type="number" max="90" class="form-control" ngModel name="duration3" [disabled]="!fOD.value.demand.zone3">
+      </div>
+    </div>
+    <!--endmodelgroup-->
+    <!-- {{ fOD.value | json }} -->
+    <br>
+    <button class="btn btn-primary" [disabled]="!checkValid(fOD)">Set demand</button>
+  </form>
+  <!--end form-->
+</div>
+
+<div *ngIf="isDemanded">
+  <h4>Demand has been set!</h4> <br> <br>
+  <p>Click here to cancel *this will cancel demand for ALL zones*</p> <br>
+  <div>
+    <button class="btn btn-primary" (click)="cancelDemands()">Cancel Demands</button>
+  </div>
+</div>
+<!--end ngifcase false-->

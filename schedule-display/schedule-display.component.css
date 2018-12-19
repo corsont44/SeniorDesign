@@ -1,0 +1,28 @@
+
+
+
+table, th, td {
+border-color: greenyellow !important;
+border: 1px solid;
+}
+
+td:hover {
+	background-color: #f5f5f5;
+}
+
+select {
+	box-shadow: #f5f5f5;
+	width: 40%;
+	
+	border: 1px solid;
+}
+
+input {
+	width: 40%;
+	box-shadow: #f5f5f5;
+	
+	border: 1px solid;
+	
+}
+
+

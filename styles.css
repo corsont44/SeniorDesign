@@ -1,0 +1,64 @@
+/* You can add global styles to this file, and also import other style files */
+/*add stylesheet for bootstrap*/
+@import "~bootstrap/dist/css/bootstrap.css";
+
+/*style for body element, add padding*/
+/*body { padding: 20px;}*/
+
+/*make invalid fields red*/
+.form-control.ng-touched.ng-invalid {
+	border: 2px solid red;
+}
+
+.btn-primary {
+	background-color: #4d9934 !important;
+}
+
+.navbar {
+    background-color: #4d9934 !important;
+}
+
+a {
+	cursor: pointer;
+}
+
+.card-header {
+	background-color:  #4d9934 !important;
+}
+
+.card {
+	border-color: #4d9934;
+	border: 1px solid;
+}
+
+.sidebar {
+	width: 225px !important;
+	background-color: #4d9934 !important;
+	min-height: calc(100vh - 56px);
+}
+.nav-link {
+	/*color: white !important;*/
+	cursor: pointer;
+}
+
+span {
+	padding: 20px;
+}
+
+#wrapper {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+  }
+  
+  #wrapper #content-wrapper {
+	overflow-x: hidden;
+	width: 100%;
+	padding-top: 1rem;
+	padding-bottom: 80px;
+  }
+  
+  body.fixed-nav #content-wrapper {
+	margin-top: 56px;
+	padding-left: 90px;
+  }

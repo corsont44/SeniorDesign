@@ -1,0 +1,196 @@
+<!--adapted from SB Admin template
+The content below is property of group 12,
+  senior design 2, fall 2018, 
+  html markup for web app.
+-->
+
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+  <a class="navbar-brand mr-1" href="index.html">Smart Garden Controller</a>
+
+  <!--button for possible sidbar toggling, only if icons are availible
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+      <i class="fas fa-bars"></i>
+    </button>-->
+  <!-- Navbar Search **removed** -->
+  <!-- Navbar -->
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item active">
+      <a class="nav-link" [ngClass]="(mainView ==='login') ? 'active' : ''" (click)="mainView = 'login'">
+        Login/Logout <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="(mainView ==='user') ? 'active' : ''" (click)="mainView = 'user'">
+        User
+      </a>
+    </li>
+  </ul>
+
+</nav>
+
+<div id="wrapper">
+
+  <!-- Sidebar -->
+  <ul class="sidebar navbar-nav navbar-dark bg-dark" *ngIf="isLoggedIn">
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="(mainView ==='data') ? 'active' : ''" (click)="mainView = 'data'">
+        <span>Data</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="(mainView ==='schedule') ? 'active' : ''" (click)="mainView = 'schedule'">
+        <span>Schedule</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="(mainView ==='demand') ? 'active' : ''" (click)="mainView = 'demand'">
+        <span>On Demand</span>
+      </a>
+    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link" [ngClass]="(mainView ==='settings') ? 'active' : ''" (click)="mainView = 'settings'">
+        <span>Settings</span>
+      </a>
+    </li> -->
+  </ul>
+
+  <div id="content-wrapper">
+
+    <div class="container-fluid">
+
+      <!--interchangeable with routerlink, different data sharing code for each-->
+      <div [ngSwitch]="mainView">
+        <div *ngSwitchCase="'login'">
+          <app-login-page [isLoggedIn]="isLoggedIn" (publish)="onLogin($event)"></app-login-page>
+        </div>
+        <div *ngSwitchCase="'user'">
+          <app-user-display [user]="user"></app-user-display>
+        </div>
+        <div *ngSwitchCase="'data'">
+          <app-data-display [user_number]="user.user_number"></app-data-display>
+        </div>
+        <div *ngSwitchCase="'schedule'">
+          <app-schedule-display [user_number]="user.user_number"></app-schedule-display>
+        </div>
+        <div *ngSwitchCase="'demand'">
+          <app-demand-display [user_number]="user.user_number"></app-demand-display>
+        </div>
+        <div *ngSwitchCase="'settings'">
+          <app-settings-display (publish)="onUnitChange($event)"></app-settings-display>
+        </div>
+
+      </div>
+
+      <!--router outlet, less than ideal for data transfer between components-->
+      <!--<router-outlet></router-outlet>-->
+
+
+    </div>
+    <!-- /.container-fluid -->
+
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span *ngIf="isLoggedIn">
+            Your Permanent User Number: {{ user.user_number }}
+          </span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- /.content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- old content of SB admin inner container
+  <!-- Breadcrumbs
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="#">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Charts</li>
+  </ol>
+
+  <!-- Area Chart Example
+  <div class="card mb-3">
+    <div class="card-header">
+      <i class="fas fa-chart-area"></i>
+      Area Chart Example</div>
+    <div class="card-body">
+      <canvas id="myAreaChart" width="100%" height="30"></canvas>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fas fa-chart-bar"></i>
+          Bar Chart Example</div>
+        <div class="card-body">
+          <canvas id="myBarChart" width="100%" height="50"></canvas>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fas fa-chart-pie"></i>
+          Pie Chart Example</div>
+        <div class="card-body">
+          <canvas id="myPieChart" width="100%" height="100"></canvas>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="small text-center text-muted my-5">
+    <em>More chart examples coming soon...</em>
+  </p>
+-->
+
+<!--ancillary test code
+  //directive tests
+<div *ngIf="metrics.length > 0; then metricsList else noMetrics"></div>
+<ng-template #metricsList>
+  List of metrics
+</ng-template>
+<ng-template #noMetrics>
+  No metrics yet
+</ng-template>
+
+//hidden attribute test
+<div [hidden]="metrics.length == 0">
+List of metrics
+</div>
+<div [hidden]="metrics.length > 0">
+No metrics yet
+</div>
+
+** comment ** The content below is property of group 12,
+  senior design 2, fall 2018, 
+  basic original html markup for web app.
+
+  <h1>Web App Test</h1>
+  <br>
+  <app-test-http></app-test-http>
+  <br>
+  <userTest></userTest>
+  <br>
+  <app-login-page></app-login-page>
+  <br>
+  <app-user-display></app-user-display>
+  <br>
+  <app-settings-display></app-settings-display>
+  <br>
+
+-->
